@@ -1,4 +1,8 @@
-S3_BUCKET_URL="The URL for the staging S3 bucket and folder should go here"
+S3_BUCKET_NAME="The URL for the staging S3 bucket and folder should go here"
+PKG="aws-ebs-snapshot-cleanup.zip"
 
+echo "Building deployment package..."
 npm run assemble
-aws s3 cp dist/aws-ebs-snapshot-cleanup.zip $S3_BUCKET_URL/aws-ebs-snapshot-cleanup.zip
+
+echo "Deploying to S3 bucket $S3_BUCKET_NAME..."
+aws s3 cp dist/$PKG s3://$S3_BUCKET_NAME/$PKG

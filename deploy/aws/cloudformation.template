@@ -1,0 +1,41 @@
+{
+  "AWSTemplateFormatVersion" : "2010-09-09",
+
+  "Description" : "Attaches a cleanup mechanism for snapshots on an EBS volume",
+
+  "Parameters" : {
+    "TargetVolumeId": {
+      "Description" : "ID for the target EBS volume (such as vol-3cdd3f56)",
+      "Type": "AWS::EC2::Volume::Id",
+      "ConstraintDescription" : "must be the ID of an existing EBS volume"
+    }
+  },
+
+  "Resources" : { 
+      "CleanupLambdaExecutionRole": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "AssumeRolePolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [{
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Service": ["lambda.amazonaws.com"]
+                            },
+                            "Action": ["sts:AssumeRole"]
+                    }]
+                },
+                "Policies": [{
+                    "Version": "2012-10-17",
+                    "Statement": [{
+                        "Action": [
+                            "ec2:DescribeSnapshots"
+                        ],
+                        "Effect": "Allow",
+                        "Resource": "*"   
+                    }]
+                }]
+            }
+      }
+  }
+}

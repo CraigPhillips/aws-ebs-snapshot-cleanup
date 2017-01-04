@@ -1,0 +1,29 @@
+{
+  "name": "aws-ebs-snapshot-cleanup",
+  "version": "1.0.0",
+  "description": "AWS Lambda function for cleaning up unneeded older Elastic Block Store snapshots when new ones are created.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CraigPhillips/aws-ebs-snapshot-cleanup.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CraigPhillips/aws-ebs-snapshot-cleanup/issues"
+  },
+  "homepage": "https://github.com/CraigPhillips/aws-ebs-snapshot-cleanup#readme",
+  "devDependencies": {
+    "del": "^2.2.2",
+    "gulp": "^3.9.1",
+    "gulp-webpack": "^1.5.0",
+    "gulp-zip": "^3.2.0"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.7.20"
+  }
+}

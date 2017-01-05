@@ -12,20 +12,21 @@
   },
 
   "Resources" : { 
-      "CleanupLambdaExecutionRole": {
-            "Type": "AWS::IAM::Role",
-            "Properties": {
-                "AssumeRolePolicyDocument": {
-                    "Version": "2012-10-17",
-                    "Statement": [{
-                            "Effect": "Allow",
-                            "Principal": {
-                                "Service": ["lambda.amazonaws.com"]
-                            },
-                            "Action": ["sts:AssumeRole"]
-                    }]
-                },
-                "Policies": [{
+    "EbsSnapshotCleanupLambdaExecutionRole": {
+        "Type": "AWS::IAM::Role",
+        "Properties": {
+            "AssumeRolePolicyDocument": {
+                "Version": "2012-10-17",
+                "Statement": [{
+                    "Effect": "Allow",
+                    "Principal": {
+                        "Service": ["lambda.amazonaws.com"]
+                    },
+                    "Action": ["sts:AssumeRole"]
+                }]
+            },
+            "Policies": [{
+                "PolicyDocument": {
                     "Version": "2012-10-17",
                     "Statement": [{
                         "Action": [
@@ -34,8 +35,25 @@
                         "Effect": "Allow",
                         "Resource": "*"   
                     }]
-                }]
-            }
-      }
+                }
+            }]
+        }
+    },
+    "CleanupLambdaProcess": {
+        "Type": "AWS::Lambda::Function",
+        "DependsOn": ["EbsSnapshotCleanupLambdaExecutionRole"],
+        "Properties": {
+            "Code": {
+                "S3Bucket": "fe-lambda",
+                "S3Key": "aws-ebs-snapshot-cleanup.zip"
+            },
+            "Role": {
+                "Fn::GetAtt": ["EbsSnapshotCleanupLambdaExecutionRole", "Arn"]
+            },
+            "Timeout": 300,
+            "Handler": "abs-ebs-snapshot-cleanup.handler",
+            "Runtime": "nodejs4.3"
+        }
+    }
   }
 }

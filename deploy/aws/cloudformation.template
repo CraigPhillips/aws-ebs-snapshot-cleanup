@@ -26,6 +26,7 @@
                 }]
             },
             "Policies": [{
+                "PolicyName": "root",
                 "PolicyDocument": {
                     "Version": "2012-10-17",
                     "Statement": [{
@@ -51,7 +52,7 @@
                 "Fn::GetAtt": ["EbsSnapshotCleanupLambdaExecutionRole", "Arn"]
             },
             "Timeout": 300,
-            "Handler": "abs-ebs-snapshot-cleanup.handler",
+            "Handler": "lambda-entry-point.handler",
             "Runtime": "nodejs4.3"
         }
     }

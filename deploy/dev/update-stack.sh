@@ -6,4 +6,4 @@ PARAMS="--parameters ParameterKey=TargetVolumeId,ParameterValue=$VOLUME_ID"
 STACK="--stack-name $STACK_NAME"
 TEMPL="--template-body file://deploy/aws/cloudformation.template"
 
-aws cloudformation create-stack $STACK $TEMPL $PARAMS $CAPABILITIES
+aws cloudformation update-stack $STACK $TEMPL $PARAMS $CAPABILITIES

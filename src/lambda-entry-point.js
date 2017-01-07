@@ -1,7 +1,7 @@
-var test = require("./test.js");
+var cleaner = require("./snapshot-cleaner");
 
 exports.handler = function(event, context) {
-    console.log("Running");
-    console.log("Event [", event, "]");
-    console.log("Context [", context, "]");
+    console.log("Cleaner [", cleaner, "]");
+    console.log("Exports [", exports, "]");
+    console.log("Module Exports [", module.exports, "]");
 };

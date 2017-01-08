@@ -6,4 +6,7 @@ PARAMS="--parameters ParameterKey=TargetVolumeId,ParameterValue=$VOLUME_ID"
 STACK="--stack-name $STACK_NAME"
 TEMPL="--template-body file://deploy/aws/cloudformation.template"
 
+deploy/dev/stage.sh
+
+echo "Sending request to create stack $STACK_NAME..."
 aws cloudformation create-stack $STACK $TEMPL $PARAMS $CAPABILITIES

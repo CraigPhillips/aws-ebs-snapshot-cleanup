@@ -16,28 +16,34 @@
         "Type": "AWS::IAM::Role",
         "Properties": {
             "AssumeRolePolicyDocument": {
-                "Version": "2012-10-17",
-                "Statement": [{
-                    "Effect": "Allow",
-                    "Principal": {
-                        "Service": ["lambda.amazonaws.com"]
-                    },
-                    "Action": ["sts:AssumeRole"]
-                }]
-            },
-            "Policies": [{
-                "PolicyName": "root",
-                "PolicyDocument": {
                     "Version": "2012-10-17",
-                    "Statement": [{
-                        "Action": [
-                            "ec2:DescribeSnapshots"
-                        ],
-                        "Effect": "Allow",
-                        "Resource": "*"   
+                    "Statement": [{ 
+                        "Effect": "Allow", 
+                        "Principal": {
+                            "Service": ["lambda.amazonaws.com"]}, 
+                            "Action": ["sts:AssumeRole"] 
                     }]
-                }
-            }]
+                },
+                "Policies": [{
+                    "PolicyName": "root",
+                    "PolicyDocument": {
+                        "Version": "2012-10-17",
+                        "Statement": [
+                            { 
+                                "Effect": "Allow", 
+                                "Action": ["logs:*"], 
+                                "Resource": "arn:aws:logs:*:*:*" 
+                            },
+                            {
+                                "Action": [
+                                    "ec2:DescribeSnapshots"
+                                ],
+                                "Effect": "Allow",
+                                "Resource": "*"   
+                            }
+                        ]
+                    }
+                }]
         }
     },
     "CleanupLambdaProcess": {
@@ -54,6 +60,63 @@
             "Timeout": 300,
             "Handler": "lambda-entry-point.handler",
             "Runtime": "nodejs4.3"
+        }
+    },
+
+    "SnapshotCreationEvent": {
+        "Type": "AWS::Events::Rule",
+        "DependsOn": "CleanupLambdaProcess",
+        "Properties": {
+            "EventPattern": {
+                "source": ["aws.ec2"],
+                "detail": {
+                    "event": ["createSnapshot"],
+                    "result": ["succeeded"],
+                    "source": [{ 
+                        "Fn::Join" : [ 
+                            ":", 
+                            [ 
+                                "arn:aws:ec2:",
+                                { "Ref" : "AWS::Region" },
+                                {
+                                    "Fn::Join" : [
+                                        "/",
+                                        [
+                                            "volume",
+                                            { "Ref" : "TargetVolumeId" }
+                                        ]
+                                    ]
+                                }
+                            ]
+                        ] 
+                    }]
+                }
+            },
+            "Targets": [{
+                "Id": "cleanup-lambda",
+                "Arn": {
+                    "Fn::GetAtt": [
+                        "CleanupLambdaProcess", "Arn"
+                    ]
+                }
+            }]
+        }
+    },
+    "CleanupLambdaExecutionPermission": {
+        "Type" : "AWS::Lambda::Permission",
+        "DependsOn": ["CleanupLambdaProcess", "SnapshotCreationEvent"],
+        "Properties" : {
+            "Action" : "lambda:InvokeFunction",
+            "FunctionName" : {
+                "Fn::GetAtt": ["CleanupLambdaProcess", "Arn"]
+            },
+            "Principal": "events.amazonaws.com",
+            "SourceArn": { 
+                "Fn::GetAtt": [
+                    "SnapshotCreationEvent",
+                    "Arn"
+                ]
+            }
         }
     }
   }

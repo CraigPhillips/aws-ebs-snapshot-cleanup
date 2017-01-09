@@ -11,13 +11,18 @@ gulp.task("default", ["clean"], function() {
     return gulp.src("src/lambda-entry-point.js")
         // Bundles all files loaded via require() calls
         .pipe(webpack({
-            target: "node",
+            externals: [
+                // The AWS SDK is present whenever running Lambda functions
+                // so it does not need to be bundled for deployment.
+                "aws-sdk"
+            ],
             output: {
                 filename: "lambda-entry-point.js",
                 // Tells Webpack to export this as a module for Lambda to 
                 // consume
                 libraryTarget: "commonjs2"
-            }
+            },
+            target: "node"
         }))
         // Wraps library in a zip for publishing
         .pipe(zip("aws-ebs-snapshot-cleanup.zip"))

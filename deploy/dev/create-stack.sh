@@ -1,8 +1,11 @@
 STACK_NAME="fe-mattermost-snapshot-cleanup"
+RET_DAYS="14"
 VOLUME_ID="vol-a0f38d14"
 
 CAPABILITIES="--capabilities CAPABILITY_IAM"
-PARAMS="--parameters ParameterKey=TargetVolumeId,ParameterValue=$VOLUME_ID"
+DAYS_PARAM="ParameterKey=MaximumSnapshotRetentionDays,ParameterValue=$RET_DAYS"
+VOLUME_ID_PARAM="ParameterKey=TargetVolumeId,ParameterValue=$VOLUME_ID"
+PARAMS="--parameters $DAYS_PARAM $VOLUME_ID_PARAM"
 STACK="--stack-name $STACK_NAME"
 TEMPL="--template-body file://deploy/aws/cloudformation.template"
 

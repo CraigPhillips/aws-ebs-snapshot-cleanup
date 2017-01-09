@@ -5,9 +5,16 @@
 
   "Parameters" : {
     "TargetVolumeId": {
-      "Description" : "ID for the target EBS volume (such as vol-3cdd3f56)",
+      "Description": "ID for the target EBS volume (such as vol-3cdd3f56)",
       "Type": "AWS::EC2::Volume::Id",
       "ConstraintDescription" : "must be the ID of an existing EBS volume"
+    },
+    "MaximumSnapshotRetentionDays": {
+        "Description": "Number of days (1-30) worth of snapshots to retain",
+        "MinValue": 1,
+        "MaxValue": 30,
+        "Type": "Number",
+        "ConstraintDescription": "must be a number between 1 and 30"
     }
   },
 
@@ -36,6 +43,7 @@
                             },
                             {
                                 "Action": [
+                                    "ec2:DeleteSnapshot",
                                     "ec2:DescribeSnapshots"
                                 ],
                                 "Effect": "Allow",
@@ -53,6 +61,14 @@
             "Code": {
                 "S3Bucket": "fe-lambda",
                 "S3Key": "aws-ebs-snapshot-cleanup.zip"
+            },
+            "Environment": {
+                "Variables": {
+                    "TargetVolumeId": { "Ref": "TargetVolumeId"},
+                    "MaximumSnapshotRetentionDays": {
+                        "Ref": "MaximumSnapshotRetentionDays"
+                    }
+                }
             },
             "Role": {
                 "Fn::GetAtt": ["EbsSnapshotCleanupLambdaExecutionRole", "Arn"]

@@ -1,6 +1,6 @@
 {
   "name": "aws-ebs-snapshot-cleanup",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "AWS Lambda function for cleaning up unneeded older Elastic Block Store snapshots when new ones are created.",
   "main": "index.js",
   "scripts": {

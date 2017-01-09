@@ -1,4 +1,4 @@
-S3_BUCKET_NAME="The URL for the staging S3 bucket and folder should go here"
+S3_BUCKET_NAME="fe-lambda"
 PKG="aws-ebs-snapshot-cleanup.zip"
 
 echo "Building deployment package..."

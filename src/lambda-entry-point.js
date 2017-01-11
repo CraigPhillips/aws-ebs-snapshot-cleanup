@@ -1,13 +1,13 @@
-var cleaner = require("./snapshot-cleaner");
+exports.cleaner = require("./snapshot-cleaner");
 
 /**
  * Serves only as an entry point
  */
 exports.handler = function(event, context) {
-    cleaner.removeExpiredSnapshots()
+    exports.cleaner.removeExpiredSnapshots()
         .then(result => {
             console.info(
-                "Snapshot cleanup finished:",
+                "Snapshot cleanup finished.",
                 result);
             
             var message = 
@@ -21,11 +21,12 @@ exports.handler = function(event, context) {
             context.succeed(message);
         })
         .catch(error => {
-            var errorMessage =
-                "Snapshot cleanup failed with error: " +
-                error.toString();
+            console.error(
+                "Snapshot cleanup failed.",
+                error);
 
-            console.error(errorMessage);
-            context.fail(errorMessage);
+            context.fail(
+                "Snapshot cleanup failed with error: " +
+                error.toString());
         });
 };

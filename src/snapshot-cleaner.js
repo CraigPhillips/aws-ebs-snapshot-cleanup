@@ -24,37 +24,6 @@ module.exports = {
     },
 
     /**
-     * Initiates request to delete the snapshot with the provided ID.
-     * 
-     * @param snapshotId The ID of the snapshot whose deletion is to be
-     * initiated.
-     * 
-     * @returns A promise which either evaluates to the ID of the snapshot that
-     * was deleted or a description of the error that prevented it from 
-     * happening correctly.
-     */
-    triggerSnapshotDeletion: function(snapshotId) {
-        return new Promise((fulfill, reject) => {
-            if(!snapshotId) reject(new Error("Snapshot ID is required"));
-            else {
-                this.ec2.deleteSnapshot(
-                    {SnapshotId: snapshotId}, 
-                    (error, data) => {
-                        if(error) {
-                            console.error(
-                                "Request to delete snapshot failed (" +
-                                    snapshotId + ")",
-                                error);
-
-                            reject(error);
-                        }
-                        else fulfill(snapshotId);
-                    });
-            }
-        });
-    },
-
-    /**
      * Handles the inspection of a volume's snapshots and the cleanup of those
      * snapshots which are deemed to be too old to keep.
      * 
@@ -149,6 +118,37 @@ module.exports = {
                     "Failed to remove expired snapshots",
                     error);
                 reject(error);
+            }
+        });
+    },
+
+    /**
+     * Initiates request to delete the snapshot with the provided ID.
+     * 
+     * @param snapshotId The ID of the snapshot whose deletion is to be
+     * initiated.
+     * 
+     * @returns A promise which either evaluates to the ID of the snapshot that
+     * was deleted or a description of the error that prevented it from 
+     * happening correctly.
+     */
+    triggerSnapshotDeletion: function(snapshotId) {
+        return new Promise((fulfill, reject) => {
+            if(!snapshotId) reject(new Error("Snapshot ID is required"));
+            else {
+                this.ec2.deleteSnapshot(
+                    {SnapshotId: snapshotId}, 
+                    (error, data) => {
+                        if(error) {
+                            console.error(
+                                "Request to delete snapshot failed (" +
+                                    snapshotId + ")",
+                                error);
+
+                            reject(error);
+                        }
+                        else fulfill(snapshotId);
+                    });
             }
         });
     }

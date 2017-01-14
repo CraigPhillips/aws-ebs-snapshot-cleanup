@@ -6,7 +6,7 @@
   "scripts": {
     "assemble": "gulp",
     "test": "mocha src",
-    "test-coverage": "istanbul cover -x */*spec.js node_modules/.bin/_mocha src"
+    "test-coverage": "istanbul cover node_modules/.bin/_mocha src"
   },
   "repository": {
     "type": "git",
@@ -21,6 +21,7 @@
   "homepage": "https://github.com/CraigPhillips/aws-ebs-snapshot-cleanup#readme",
   "devDependencies": {
     "del": "^2.2.2",
+    "fe-mock-js-console": "0.0.2",
     "gulp": "^3.9.1",
     "gulp-webpack": "^1.5.0",
     "gulp-zip": "^3.2.0",

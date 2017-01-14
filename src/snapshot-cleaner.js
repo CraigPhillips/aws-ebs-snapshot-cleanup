@@ -2,6 +2,7 @@ var awsSdk = require("aws-sdk");
 
 module.exports = {
     ec2: new awsSdk.EC2(),
+    targetProcess: process,
 
     /**
      * Attempts to load an environment variable with the provided name. Failures
@@ -14,13 +15,13 @@ module.exports = {
     loadEnvironmentVariable: function(variableName) {
         if(!variableName) return null;
 
-        if(!process || !process.env)
+        if(!this.targetProcess || !this.targetProcess.env)
             throw new Error("Unable to load environment variables");
-        if(!process.env[variableName])
+        if(!this.targetProcess.env[variableName])
             throw new Error(
                 "Unable to load environment variable " + variableName);
 
-        return process.env[variableName];
+        return this.targetProcess.env[variableName];
     },
 
     /**

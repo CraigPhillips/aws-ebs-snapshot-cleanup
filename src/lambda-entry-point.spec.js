@@ -1,6 +1,6 @@
 var entryPoint = require("./lambda-entry-point"),
     mocha = require("mocha"), 
-    mockConsole = require("./test/fe-mock-console"),
+    mockConsole = require("fe-mock-js-console"),
     should = require("should");
 
 describe("lambda-entry-point", () => {

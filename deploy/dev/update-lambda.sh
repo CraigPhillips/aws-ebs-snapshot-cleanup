@@ -1,4 +1,4 @@
-TARGET_ARN="arn:aws:lambda:us-west-2:636825982361:function:fe-mattermost-snapshot-cleanu-CleanupLambdaProcess-1VAWQR20PUR9B"
+TARGET_ARN="[TARGET LAMBDA FUNCTION ARN HERE] (ie. arn:aws:lambda:...)"
 
 TARGET="--zip-file fileb://dist/aws-ebs-snapshot-cleanup.zip"
 

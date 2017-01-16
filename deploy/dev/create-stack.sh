@@ -1,6 +1,6 @@
-STACK_NAME="fe-mattermost-snapshot-cleanup"
+STACK_NAME="[DESIRED STACK NAME HERE (ie. volume-cleanup-stack)]"
 RET_DAYS="14"
-VOLUME_ID="vol-a0f38d14"
+VOLUME_ID="[TARGET VOLUME ID HERE (ie. vol-1234)]"
 
 CAPABILITIES="--capabilities CAPABILITY_IAM"
 DAYS_PARAM="ParameterKey=MaximumSnapshotRetentionDays,ParameterValue=$RET_DAYS"

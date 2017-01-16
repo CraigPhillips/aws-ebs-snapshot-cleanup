@@ -1,4 +1,4 @@
-S3_BUCKET_NAME="fe-lambda"
+S3_BUCKET_NAME="[STAGING S3 BUCKET NAME HERE (ie. my-staging-bucket)]"
 PKG="aws-ebs-snapshot-cleanup.zip"
 
 echo "Building deployment package..."

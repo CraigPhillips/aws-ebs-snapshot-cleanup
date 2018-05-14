@@ -18,17 +18,17 @@
     }
   },
 
-  "Resources" : { 
+  "Resources" : {
     "EbsSnapshotCleanupLambdaExecutionRole": {
         "Type": "AWS::IAM::Role",
         "Properties": {
             "AssumeRolePolicyDocument": {
                     "Version": "2012-10-17",
-                    "Statement": [{ 
-                        "Effect": "Allow", 
+                    "Statement": [{
+                        "Effect": "Allow",
                         "Principal": {
-                            "Service": ["lambda.amazonaws.com"]}, 
-                            "Action": ["sts:AssumeRole"] 
+                            "Service": ["lambda.amazonaws.com"]},
+                            "Action": ["sts:AssumeRole"]
                     }]
                 },
                 "Policies": [{
@@ -36,10 +36,10 @@
                     "PolicyDocument": {
                         "Version": "2012-10-17",
                         "Statement": [
-                            { 
-                                "Effect": "Allow", 
-                                "Action": ["logs:*"], 
-                                "Resource": "arn:aws:logs:*:*:*" 
+                            {
+                                "Effect": "Allow",
+                                "Action": ["logs:*"],
+                                "Resource": "arn:aws:logs:*:*:*"
                             },
                             {
                                 "Action": [
@@ -47,7 +47,7 @@
                                     "ec2:DescribeSnapshots"
                                 ],
                                 "Effect": "Allow",
-                                "Resource": "*"   
+                                "Resource": "*"
                             }
                         ]
                     }
@@ -75,7 +75,7 @@
             },
             "Timeout": 300,
             "Handler": "lambda-entry-point.handler",
-            "Runtime": "nodejs4.3"
+            "Runtime": "nodejs8.10"
         }
     },
 
@@ -88,10 +88,10 @@
                 "detail": {
                     "event": ["createSnapshot"],
                     "result": ["succeeded"],
-                    "source": [{ 
-                        "Fn::Join" : [ 
-                            ":", 
-                            [ 
+                    "source": [{
+                        "Fn::Join" : [
+                            ":",
+                            [
                                 "arn:aws:ec2:",
                                 { "Ref" : "AWS::Region" },
                                 {
@@ -104,7 +104,7 @@
                                     ]
                                 }
                             ]
-                        ] 
+                        ]
                     }]
                 }
             },
@@ -127,7 +127,7 @@
                 "Fn::GetAtt": ["CleanupLambdaProcess", "Arn"]
             },
             "Principal": "events.amazonaws.com",
-            "SourceArn": { 
+            "SourceArn": {
                 "Fn::GetAtt": [
                     "SnapshotCreationEvent",
                     "Arn"
